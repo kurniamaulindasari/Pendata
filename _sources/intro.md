@@ -1,11 +1,13 @@
-# Welcome to your Jupyter Book
+# Kurnia Maulinda Sari 240411100026
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+Haii..
+Aku Kurnia Maulinda Sari dengan NIM 240411100026
 
-Check out the content pages bundled with this sample book to see more.
+Website statis ini aku buat khusus buat matkul Penambangan Data, jadi isinya bakal seputar materi, rangkuman, tugas, sampai project yang berhubungan sama data mining. Mulai dari ngolah data, cari pola tersembunyi, sampai analisis yang bikin data 📊💻
+
+Website ini juga jadi tempat aku dokumentasiin proses belajarku 😭🔥
+
+Semoga isi website ini bisa nunjukin proses belajar dan effort yang aku lakuin selama kuliah. Thanks udah mampir ✨
 
 ```{tableofcontents}
 ```
