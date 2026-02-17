@@ -1,4 +1,4 @@
-# Kurnia Maulinda Sari 240411100026
+# 240411100026 Kurnia Maulinda Sari
 
 Haii..
 Aku Kurnia Maulinda Sari dengan NIM 240411100026
@@ -7,7 +7,7 @@ Website statis ini aku buat khusus buat matkul Penambangan Data, jadi isinya bak
 
 Website ini juga jadi tempat aku dokumentasiin proses belajarku 😭🔥
 
-Semoga isi website ini bisa nunjukin proses belajar dan effort yang aku lakuin selama kuliah. Thanks udah mampir ✨
+Semoga isi website ini bisa nunjukin proses belajar dan effort yang aku lakuin selama kuliah✨
 
 ```{tableofcontents}
 ```
