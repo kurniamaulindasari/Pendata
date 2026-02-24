@@ -2,6 +2,7 @@
 
 Haii..
 Aku Kurnia Maulinda Sari dengan NIM 240411100026
+dan ini email aku kurnia.maulindas11@gmail.com
 
 Website statis ini aku buat khusus buat matkul Penambangan Data, jadi isinya bakal seputar materi, rangkuman, tugas, sampai project yang berhubungan sama data mining. Mulai dari ngolah data, cari pola tersembunyi, sampai analisis yang bikin data 📊💻
 
