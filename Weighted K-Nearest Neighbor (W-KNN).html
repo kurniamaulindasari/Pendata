@@ -393,13 +393,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-menghitung-kuadrat-jarak">C. Menghitung Kuadrat Jarak</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-menghitung-bobot-kemiripan">D. Menghitung Bobot (kemiripan)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-menghitung-bobot-x-nilai">E. Menghitung Bobot X Nilai</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-menghitung-pembilang-dan-penyebut">F. Menghitung Pembilang dan Penyebut</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-pembilang">Menghitung Pembilang</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-pembilang-menunjukkan-kontribusi-nilai-data-yang-telah-dikalikan-dengan-bobotnya-data-yang-lebih-dekat-memiliki-bobot-lebih-besar-sehingga-pengaruhnya-terhadap-estimasi-lebih-kuat">Penjelasan : Pembilang menunjukkan kontribusi nilai data yang telah dikalikan dengan bobotnya. Data yang lebih dekat memiliki bobot lebih besar sehingga pengaruhnya terhadap estimasi lebih kuat.</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-pemnyebut">Menghitung Pemnyebut</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-penyebut-digunakan-untuk-menormalkan-bobot-sehingga-hasil-estimasi-menjadi-rata-rata-berbobot-yang-proporsional">Penjelasan : Penyebut digunakan untuk menormalkan bobot, sehingga hasil estimasi menjadi rata-rata berbobot yang proporsional.</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-menghitung-pembilang-dan-penyebut">F. Menghitung Pembilang dan Penyebut</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-menghitung-etimasi-nilai">G. Menghitung Etimasi Nilai</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-hasil-etimasi">H. Hasil Etimasi</a></li>
 </ul>
@@ -734,100 +728,98 @@ hasil klasifikasi biasanya bisa menjadi <strong>lebih akurat</strong> karena dat
 </section>
 <section id="f-menghitung-pembilang-dan-penyebut">
 <h3>F. Menghitung Pembilang dan Penyebut<a class="headerlink" href="#f-menghitung-pembilang-dan-penyebut" title="Link to this heading">#</a></h3>
-<section id="menghitung-pembilang">
-<h4>Menghitung Pembilang<a class="headerlink" href="#menghitung-pembilang" title="Link to this heading">#</a></h4>
-<div class="math notranslate nohighlight">
-\[
+<p>Menghitung Pembilang
+$<span class="math notranslate nohighlight">\(
 \sum w_i y_i
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(
 \sum w_i y_i =
 0.128 + 0.30 + 0.666 + 8.8 + 12 + 1.5984
-\]</div>
-<blockquote>
-<div><p>Langkah penjumlahan
-$<span class="math notranslate nohighlight">\(
-0.128 + 0.30 = 0.428
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-0.428 + 0.666 = 1.094
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-1.094 + 8.8 = 9.894
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-9.894 + 12 = 21.894
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-21.894 + 1.5984 = 23.4924
 \)</span>$</p>
+<blockquote>
+<div><p>Langkah penjumlahan</p>
 </div></blockquote>
+<div class="math notranslate nohighlight">
+\[
+0.128 + 0.30 = 0.428
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0.428 + 0.666 = 1.094
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+1.094 + 8.8 = 9.894
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+9.894 + 12 = 21.894
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+21.894 + 1.5984 = 23.4924
+\]</div>
 <div class="math notranslate nohighlight">
 \[
 \sum w_i y_i = 23.4924
 \]</div>
-</section>
-<section id="penjelasan-pembilang-menunjukkan-kontribusi-nilai-data-yang-telah-dikalikan-dengan-bobotnya-data-yang-lebih-dekat-memiliki-bobot-lebih-besar-sehingga-pengaruhnya-terhadap-estimasi-lebih-kuat">
-<h4>Penjelasan : Pembilang menunjukkan kontribusi nilai data yang telah dikalikan dengan bobotnya. Data yang lebih dekat memiliki bobot lebih besar sehingga pengaruhnya terhadap estimasi lebih kuat.<a class="headerlink" href="#penjelasan-pembilang-menunjukkan-kontribusi-nilai-data-yang-telah-dikalikan-dengan-bobotnya-data-yang-lebih-dekat-memiliki-bobot-lebih-besar-sehingga-pengaruhnya-terhadap-estimasi-lebih-kuat" title="Link to this heading">#</a></h4>
-</section>
-<section id="menghitung-pemnyebut">
-<h4>Menghitung Pemnyebut<a class="headerlink" href="#menghitung-pemnyebut" title="Link to this heading">#</a></h4>
-<div class="math notranslate nohighlight">
-\[
-\sum w_i
-\]</div>
-<div class="math notranslate nohighlight">
-\[
-0.0016 + 0.0025 + 0.00444 + 0.04 + 0.04 + 0.00444
-\]</div>
-<blockquote>
-<div><p>Langkah penjumlahan
+<p>Penjelasan : Pembilang menunjukkan kontribusi nilai data yang telah dikalikan dengan bobotnya. Data yang lebih dekat memiliki bobot lebih besar sehingga pengaruhnya terhadap estimasi lebih kuat.</p>
+<p>Menghitung Penyebut
 $<span class="math notranslate nohighlight">\(
-0.0016 + 0.0025 = 0.0041
+\sum w_i
 \)</span><span class="math notranslate nohighlight">\(
 \)</span><span class="math notranslate nohighlight">\(
-0.0041 + 0.00444 = 0.00854
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-0.00854 + 0.04 = 0.04854
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-0.04854 + 0.04 = 0.08854
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-0.08854 + 0.00444 = 0.09298
+0.0016 + 0.0025 + 0.00444 + 0.04 + 0.04 + 0.00444
 \)</span>$</p>
+<blockquote>
+<div><p>Langkah penjumlahan</p>
 </div></blockquote>
+<div class="math notranslate nohighlight">
+\[
+0.0016 + 0.0025 = 0.0041
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0.0041 + 0.00444 = 0.00854
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0.00854 + 0.04 = 0.04854
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0.04854 + 0.04 = 0.08854
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0.08854 + 0.00444 = 0.09298
+\]</div>
 <div class="math notranslate nohighlight">
 \[
 \sum w_i = 0.09298
 \]</div>
-</section>
-<section id="penjelasan-penyebut-digunakan-untuk-menormalkan-bobot-sehingga-hasil-estimasi-menjadi-rata-rata-berbobot-yang-proporsional">
-<h4>Penjelasan : Penyebut digunakan untuk menormalkan bobot, sehingga hasil estimasi menjadi rata-rata berbobot yang proporsional.<a class="headerlink" href="#penjelasan-penyebut-digunakan-untuk-menormalkan-bobot-sehingga-hasil-estimasi-menjadi-rata-rata-berbobot-yang-proporsional" title="Link to this heading">#</a></h4>
-</section>
+<p>Penjelasan : Penyebut digunakan untuk menormalkan bobot, sehingga hasil estimasi menjadi rata-rata berbobot yang proporsional.</p>
 </section>
 <section id="g-menghitung-etimasi-nilai">
 <h3>G. Menghitung Etimasi Nilai<a class="headerlink" href="#g-menghitung-etimasi-nilai" title="Link to this heading">#</a></h3>
-<p>Rumus estimasi pada W-KNN:
-$<span class="math notranslate nohighlight">\(
+<p>Rumus estimasi pada W-KNN:</p>
+<p><span class="math notranslate nohighlight">\(
 \hat{y} =
 \frac{\sum w_i y_i}{\sum w_i}
-\)</span><span class="math notranslate nohighlight">\(
-Masukkan nilai pembilang dan penyebut:
-\)</span><span class="math notranslate nohighlight">\(
+\)</span></p>
+<p>Masukkan nilai pembilang dan penyebut:</p>
+<p><span class="math notranslate nohighlight">\(
 \hat{y} =
 \frac{23.4924}{0.09298}
-\)</span><span class="math notranslate nohighlight">\(
-Hasil:
-\)</span><span class="math notranslate nohighlight">\(
+\)</span></p>
+<p>Hasil:</p>
+<p><span class="math notranslate nohighlight">\(
 \hat{y} \approx 252.6
-\)</span><span class="math notranslate nohighlight">\(
-Jika dibulatkan:
-\)</span><span class="math notranslate nohighlight">\(
+\)</span></p>
+<p>Jika dibulatkan:</p>
+<p><span class="math notranslate nohighlight">\(
 \hat{y} \approx 253
-\)</span>$</p>
+\)</span></p>
 <p><img alt="image.png" src="data:image/png;base64,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" /></p>
 </section>
 <section id="h-hasil-etimasi">
@@ -1197,17 +1189,20 @@ x' = \frac{5}{40}
 x' = 0.125
 \]</div>
 <ul class="simple">
-<li><p>Normalisasi Kalori = 120
-$<span class="math notranslate nohighlight">\(
-x' = \frac{120 - 80}{360 - 80}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-x' = \frac{40}{280}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-x' = 0.142857
-\)</span>$</p></li>
+<li><p>Normalisasi Kalori = 120</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[
+x' = \frac{120 - 80}{360 - 80}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+x' = \frac{40}{280}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+x' = 0.142857
+\]</div>
 <p>Hasil Min-Max Normalization</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1271,27 +1266,35 @@ x' = 0.142857
 </div></blockquote>
 <p>Contoh Perhitungan Z-Score</p>
 <ul class="simple">
-<li><p>Z-Score Waktu = 40 menit
-$<span class="math notranslate nohighlight">\(
-z = \frac{40 - 27.5}{14.06828585}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-z = \frac{12.5}{14.06828585}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-z = 0.88852
-\)</span>$</p></li>
-<li><p>Z-Score Kalori 300 kalori
-$<span class="math notranslate nohighlight">\(
-z = \frac{300 - 205}{99.28914006}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-z = \frac{95}{99.28914006}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-z = 0.95680
-\)</span>$</p></li>
+<li><p>Z-Score Waktu = 40 menit</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[
+z = \frac{40 - 27.5}{14.06828585}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+z = \frac{12.5}{14.06828585}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+z = 0.88852
+\]</div>
+<ul class="simple">
+<li><p>Z-Score Kalori 300 kalori</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+z = \frac{300 - 205}{99.28914006}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+z = \frac{95}{99.28914006}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+z = 0.95680
+\]</div>
 <p>Hasil Z-Score Normalization</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1354,21 +1357,27 @@ z = 0.95680
 </div></blockquote>
 <p>Contoh Perhitungan Decimal Scaling</p>
 <ul class="simple">
-<li><p>Decimal Scaling Waktu 40 menit
-$<span class="math notranslate nohighlight">\(
-x' = \frac{40}{100}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-x' = 0.4
-\)</span>$</p></li>
-<li><p>Decimal Scaling Kalori 300 kalori
-$<span class="math notranslate nohighlight">\(
-x' = \frac{300}{100}
-\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(
-x' = 3.0
-\)</span>$</p></li>
+<li><p>Decimal Scaling Waktu 40 menit</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[
+x' = \frac{40}{100}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+x' = 0.4
+\]</div>
+<ul class="simple">
+<li><p>Decimal Scaling Kalori 300 kalori</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+x' = \frac{300}{100}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+x' = 3.0
+\]</div>
 <p>Hasil Decimal Scaling</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1706,13 +1715,7 @@ Nilai j Kalori: 2
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-menghitung-kuadrat-jarak">C. Menghitung Kuadrat Jarak</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-menghitung-bobot-kemiripan">D. Menghitung Bobot (kemiripan)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-menghitung-bobot-x-nilai">E. Menghitung Bobot X Nilai</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-menghitung-pembilang-dan-penyebut">F. Menghitung Pembilang dan Penyebut</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-pembilang">Menghitung Pembilang</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-pembilang-menunjukkan-kontribusi-nilai-data-yang-telah-dikalikan-dengan-bobotnya-data-yang-lebih-dekat-memiliki-bobot-lebih-besar-sehingga-pengaruhnya-terhadap-estimasi-lebih-kuat">Penjelasan : Pembilang menunjukkan kontribusi nilai data yang telah dikalikan dengan bobotnya. Data yang lebih dekat memiliki bobot lebih besar sehingga pengaruhnya terhadap estimasi lebih kuat.</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-pemnyebut">Menghitung Pemnyebut</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-penyebut-digunakan-untuk-menormalkan-bobot-sehingga-hasil-estimasi-menjadi-rata-rata-berbobot-yang-proporsional">Penjelasan : Penyebut digunakan untuk menormalkan bobot, sehingga hasil estimasi menjadi rata-rata berbobot yang proporsional.</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-menghitung-pembilang-dan-penyebut">F. Menghitung Pembilang dan Penyebut</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#g-menghitung-etimasi-nilai">G. Menghitung Etimasi Nilai</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-hasil-etimasi">H. Hasil Etimasi</a></li>
 </ul>
