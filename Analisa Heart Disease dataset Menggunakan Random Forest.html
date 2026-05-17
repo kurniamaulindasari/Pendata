@@ -194,7 +194,6 @@
 <li class="toctree-l1"><a class="reference internal" href="Analisa%20Data%20Menggunakan%20Naive%20Bayes.html">Klasifikasi Naive Bayes pada Obesity Prediction Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Analisa%20Data%20Sleep%20Health%20and%20Lifestyle%20Menggunakan%20Pohon%20Keputusan.html">Analisa Data Menggunakan Pohon Keputusan pada Sleep Health and Lifestyle Dataset</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Analisa Heart Disease dataset Menggunakan Random Forest</a></li>
-
 </ul>
 
     </div>
@@ -390,7 +389,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Analisa Heart Disease dataset Menggunakan Random Forest</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-dataset">Informasi DataSet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-dataset">Fitur DataSet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-dataset">Label DataSet</a></li>
@@ -409,31 +407,28 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">Kesimpulan</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-evaluasi-model-random-forest">Perhitungan Manual Evaluasi Model Random Forest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. Confusion Matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-data-testing">2. Total Data Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-akurasi">3. Accuracy (Akurasi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">4. Recall</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0-tidak-sakit">Kelas 0 (Tidak Sakit)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1-sakit">Kelas 1 (Sakit)</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-evaluasi-model-random-forest">Perhitungan Manual Evaluasi Model Random Forest</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. Confusion Matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#total-data-testing">2. Total Data Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-akurasi">3. Accuracy (Akurasi)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">4. Recall</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0-tidak-sakit">Kelas 0 (Tidak Sakit)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1-sakit">Kelas 1 (Sakit)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5. Precision</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0">Kelas 0</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1">Kelas 1</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5. Precision</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0">Kelas 0</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1">Kelas 1</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">6. Specificity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity">7. Sensitivity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">8. F1-Score</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohens-kappa">9. Cohen’s Kappa</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">6. Specificity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity">7. Sensitivity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">8. F1-Score</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cohens-kappa">9. Cohen’s Kappa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
 </ul>
 </li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -1046,12 +1041,11 @@ Decision Tree melakukan 39 kesalahan prediksi (27 FP + 12 FN). Random Forest han
 <p>Berdasarkan hasil perbandingan performa antara model Decision Tree dan Random Forest pada dataset penyakit jantung, dapat disimpulkan bahwa model Random Forest jauh lebih unggul dibandingkan Decision Tree dalam hampir semua metrik evaluasi. Random Forest berhasil mencapai akurasi 94% lebih tinggi dibanding Decision Tree yang hanya 87,3%, serta mampu menekan total kesalahan prediksi dari 39 menjadi hanya 13 data. Peningkatan paling signifikan terlihat pada precision kelas 1 (sakit jantung) yang naik dari 83,9% menjadi 92,9%, dan recall kelas 0 (tidak sakit) yang naik dari 82,6% menjadi 92,5%. Nilai Cohen’s Kappa juga meningkat dari 0,747 (substansial) menjadi 0,880 (hampir sempurna), menunjukkan bahwa model Random Forest memiliki tingkat kesepakatan yang sangat baik dengan label sebenarnya. Dengan demikian, model Random Forest lebih direkomendasikan untuk digunakan dalam analisis prediksi penyakit jantung karena lebih akurat, lebih handal, dan menghasilkan lebih sedikit kesalahan diagnosis.</p>
 </section>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="perhitungan-manual-evaluasi-model-random-forest">
-<h1>Perhitungan Manual Evaluasi Model Random Forest<a class="headerlink" href="#perhitungan-manual-evaluasi-model-random-forest" title="Link to this heading">#</a></h1>
+<section id="perhitungan-manual-evaluasi-model-random-forest">
+<h2>Perhitungan Manual Evaluasi Model Random Forest<a class="headerlink" href="#perhitungan-manual-evaluasi-model-random-forest" title="Link to this heading">#</a></h2>
 <hr class="docutils" />
 <section id="confusion-matrix">
-<h2>1. Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h2>
+<h3>1. Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{array}{c|cc}
@@ -1070,7 +1064,7 @@ Decision Tree melakukan 39 kesalahan prediksi (27 FP + 12 FN). Random Forest han
 </ul>
 </section>
 <section id="total-data-testing">
-<h2>2. Total Data Testing<a class="headerlink" href="#total-data-testing" title="Link to this heading">#</a></h2>
+<h3>2. Total Data Testing<a class="headerlink" href="#total-data-testing" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
 \text{Total Data} = TN + FP + FN + TP
@@ -1082,7 +1076,7 @@ Decision Tree melakukan 39 kesalahan prediksi (27 FP + 12 FN). Random Forest han
 <p>Total data testing adalah seluruh data yang digunakan untuk evaluasi model (30% dari dataset), yaitu <strong>216 data</strong>.</p>
 </section>
 <section id="accuracy-akurasi">
-<h2>3. Accuracy (Akurasi)<a class="headerlink" href="#accuracy-akurasi" title="Link to this heading">#</a></h2>
+<h3>3. Accuracy (Akurasi)<a class="headerlink" href="#accuracy-akurasi" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
 \text{Accuracy} = \frac{TN + TP}{TN + FP + FN + TP}
@@ -1095,9 +1089,9 @@ Decision Tree melakukan 39 kesalahan prediksi (27 FP + 12 FN). Random Forest han
 Artinya, model mampu memprediksi dengan benar sekitar <strong>94% dari total data testing</strong>.</p>
 </section>
 <section id="recall">
-<h2>4. Recall<a class="headerlink" href="#recall" title="Link to this heading">#</a></h2>
+<h3>4. Recall<a class="headerlink" href="#recall" title="Link to this heading">#</a></h3>
 <section id="kelas-0-tidak-sakit">
-<h3>Kelas 0 (Tidak Sakit)<a class="headerlink" href="#kelas-0-tidak-sakit" title="Link to this heading">#</a></h3>
+<h4>Kelas 0 (Tidak Sakit)<a class="headerlink" href="#kelas-0-tidak-sakit" title="Link to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 \text{Recall}_0 = \frac{TN}{TN + FP} = \frac{99}{107} = 0.925
@@ -1106,7 +1100,7 @@ Artinya, model mampu memprediksi dengan benar sekitar <strong>94% dari total dat
 Artinya, model berhasil mengenali <strong>92,5% data tidak sakit dengan benar</strong>.</p>
 </section>
 <section id="kelas-1-sakit">
-<h3>Kelas 1 (Sakit)<a class="headerlink" href="#kelas-1-sakit" title="Link to this heading">#</a></h3>
+<h4>Kelas 1 (Sakit)<a class="headerlink" href="#kelas-1-sakit" title="Link to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 \text{Recall}_1 = \frac{TP}{TP + FN} = \frac{104}{109} = 0.954
@@ -1116,9 +1110,9 @@ Artinya, model berhasil mendeteksi <strong>95,4% pasien sakit jantung dengan ben
 </section>
 </section>
 <section id="precision">
-<h2>5. Precision<a class="headerlink" href="#precision" title="Link to this heading">#</a></h2>
+<h3>5. Precision<a class="headerlink" href="#precision" title="Link to this heading">#</a></h3>
 <section id="kelas-0">
-<h3>Kelas 0<a class="headerlink" href="#kelas-0" title="Link to this heading">#</a></h3>
+<h4>Kelas 0<a class="headerlink" href="#kelas-0" title="Link to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 \text{Precision}_0 = \frac{TN}{TN + FN} = \frac{99}{104} = 0.952
@@ -1127,7 +1121,7 @@ Artinya, model berhasil mendeteksi <strong>95,4% pasien sakit jantung dengan ben
 Artinya, dari semua prediksi kelas 0, <strong>95,2% benar</strong>.</p>
 </section>
 <section id="kelas-1">
-<h3>Kelas 1<a class="headerlink" href="#kelas-1" title="Link to this heading">#</a></h3>
+<h4>Kelas 1<a class="headerlink" href="#kelas-1" title="Link to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 \text{Precision}_1 = \frac{TP}{TP + FP} = \frac{104}{112} = 0.929
@@ -1137,7 +1131,7 @@ Artinya, dari semua prediksi pasien sakit, <strong>92,9% benar</strong>.</p>
 </section>
 </section>
 <section id="specificity">
-<h2>6. Specificity<a class="headerlink" href="#specificity" title="Link to this heading">#</a></h2>
+<h3>6. Specificity<a class="headerlink" href="#specificity" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
 \text{Specificity} = \frac{TN}{TN + FP} = \frac{99}{107} = 0.925
@@ -1146,7 +1140,7 @@ Artinya, dari semua prediksi pasien sakit, <strong>92,9% benar</strong>.</p>
 Model mampu mengenali <strong>92,5% pasien tidak sakit dengan benar</strong>.</p>
 </section>
 <section id="sensitivity">
-<h2>7. Sensitivity<a class="headerlink" href="#sensitivity" title="Link to this heading">#</a></h2>
+<h3>7. Sensitivity<a class="headerlink" href="#sensitivity" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
 \text{Sensitivity} = \frac{TP}{TP + FN} = \frac{104}{109} = 0.954
@@ -1155,7 +1149,7 @@ Model mampu mengenali <strong>92,5% pasien tidak sakit dengan benar</strong>.</p
 Model mampu mendeteksi <strong>95,4% pasien sakit jantung dengan benar</strong>.</p>
 </section>
 <section id="f1-score">
-<h2>8. F1-Score<a class="headerlink" href="#f1-score" title="Link to this heading">#</a></h2>
+<h3>8. F1-Score<a class="headerlink" href="#f1-score" title="Link to this heading">#</a></h3>
 <p>F1-score merupakan rata-rata harmonis antara precision dan recall.</p>
 <ul class="simple">
 <li><p>F1 Kelas 0 = <strong>0.938</strong></p></li>
@@ -1165,7 +1159,7 @@ Model mampu mendeteksi <strong>95,4% pasien sakit jantung dengan benar</strong>.
 Nilai yang tinggi menunjukkan model memiliki performa yang stabil pada kedua kelas.</p>
 </section>
 <section id="cohens-kappa">
-<h2>9. Cohen’s Kappa<a class="headerlink" href="#cohens-kappa" title="Link to this heading">#</a></h2>
+<h3>9. Cohen’s Kappa<a class="headerlink" href="#cohens-kappa" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
 P_o = 0.9398
@@ -1184,7 +1178,7 @@ P_e = (0.4954 \times 0.4815) + (0.5046 \times 0.5185) = 0.5001
 <p>Nilai <strong>0.88</strong> termasuk kategori <em>Almost Perfect Agreement</em>, yang berarti model sangat konsisten.</p>
 </section>
 <section id="id2">
-<h2>Kesimpulan<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h3>Kesimpulan<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Model Random Forest menunjukkan performa yang sangat baik dengan:</p>
 <ul class="simple">
 <li><p>Akurasi: <strong>94%</strong></p></li>
@@ -1195,6 +1189,7 @@ P_e = (0.4954 \times 0.4815) + (0.5046 \times 0.5185) = 0.5001
 </ul>
 <p>Kesimpulannya, model Random Forest sangat layak digunakan untuk prediksi penyakit jantung karena memiliki tingkat akurasi dan kestabilan yang tinggi.</p>
 <p>Berdasarkan perhitungan manual yang telah dilakukan, model Random Forest pada dataset penyakit jantung memiliki performa yang sangat baik dengan akurasi mencapai 94%. Model mampu mengenali pasien sakit jantung (sensitivity) sebesar 95,4% dan pasien tidak sakit jantung (specificity) sebesar 92,5%. Precision untuk prediksi sakit jantung adalah 92,9% dan untuk prediksi tidak sakit adalah 95,2%, menunjukkan bahwa model jarang membuat kesalahan diagnosis. Nilai F-measure yang berkisar antara 0,938 hingga 0,941 mengindikasikan keseimbangan yang sangat baik antara precision dan recall. Cohen’s Kappa sebesar 0,88 termasuk dalam kategori “hampir sempurna”, yang berarti tingkat kesepakatan antara prediksi model dengan kondisi sebenarnya sangat tinggi. Semua hasil perhitungan manual ini sesuai dengan output yang ditampilkan oleh node Scorer di KNIME, membuktikan bahwa perhitungan sudah benar dan model Random Forest dapat diandalkan untuk memprediksi penyakit jantung.</p>
+</section>
 </section>
 </section>
 
@@ -1253,7 +1248,6 @@ P_e = (0.4954 \times 0.4815) + (0.5046 \times 0.5185) = 0.5001
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Analisa Heart Disease dataset Menggunakan Random Forest</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-dataset">Informasi DataSet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-dataset">Fitur DataSet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-dataset">Label DataSet</a></li>
@@ -1272,31 +1266,28 @@ P_e = (0.4954 \times 0.4815) + (0.5046 \times 0.5185) = 0.5001
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">Kesimpulan</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-evaluasi-model-random-forest">Perhitungan Manual Evaluasi Model Random Forest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. Confusion Matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-data-testing">2. Total Data Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-akurasi">3. Accuracy (Akurasi)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">4. Recall</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0-tidak-sakit">Kelas 0 (Tidak Sakit)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1-sakit">Kelas 1 (Sakit)</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-evaluasi-model-random-forest">Perhitungan Manual Evaluasi Model Random Forest</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. Confusion Matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#total-data-testing">2. Total Data Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-akurasi">3. Accuracy (Akurasi)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">4. Recall</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0-tidak-sakit">Kelas 0 (Tidak Sakit)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1-sakit">Kelas 1 (Sakit)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5. Precision</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0">Kelas 0</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1">Kelas 1</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5. Precision</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-0">Kelas 0</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-1">Kelas 1</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">6. Specificity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity">7. Sensitivity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">8. F1-Score</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohens-kappa">9. Cohen’s Kappa</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">6. Specificity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity">7. Sensitivity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">8. F1-Score</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cohens-kappa">9. Cohen’s Kappa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
 </ul>
 </li>
 </ul>
-
   </nav></div>
 
 </div></div>
