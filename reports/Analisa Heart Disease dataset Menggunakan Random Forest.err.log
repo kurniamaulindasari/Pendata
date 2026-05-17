@@ -1,0 +1,111 @@
+Traceback (most recent call last):
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/asyncio/base_events.py", line 684, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import pandas as pd
+# Fungsi: Untuk memanipulasi data dalam bentuk tabel (DataFrame)
+# Digunakan untuk: Membaca data, menghapus baris kosong, memilih kolom, membuat output
+
+from sklearn.ensemble import RandomForestClassifier
+# Fungsi: Algoritma machine learning yang menggunakan banyak pohon keputusan
+# Kelebihan: Akurasi tinggi, tahan overfitting, bisa menangani banyak fitur
+
+from sklearn.model_selection import train_test_split
+# Fungsi: Untuk membagi data menjadi training set (latih) dan testing set (uji)
+# Parameter: test_size=0.3 artinya 30% untuk testing, 70% untuk training
+
+import knime.scripting.io as knio
+# Fungsi: Jembatan komunikasi antara Python dan KNIME
+# Input: knio.input_tables[0] mengambil data dari node sebelumnya
+# Output: knio.output_tables[0] mengirim data ke node berikutnya
+
+df = knio.input_tables[0].to_pandas()
+# knio.input_tables[0] = tabel pertama yang masuk ke node Python Script
+# .to_pandas() = mengubah tabel KNIME menjadi DataFrame Pandas
+# Hasil: variabel df berisi seluruh dataset heart.csv
+
+df = df.dropna()
+# .dropna() = menghapus baris yang memiliki nilai kosong (NaN)
+# Mengapa perlu? Random Forest tidak bisa memproses data kosong
+# Hasil: df bersih tanpa missing values
+
+X = df.drop(columns=['target'])
+# .drop(columns=['target']) = menghapus kolom 'target' dari dataframe
+# X berisi semua kolom FITUR: age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal
+# Jumlah fitur = 13 kolom
+
+y = df['target']
+# df['target'] = mengambil hanya kolom 'target'
+# y berisi LABEL kelas: 0 = tidak sakit jantung, 1 = sakit jantung
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# train_test_split = fungsi untuk membagi data
+# test_size=0.3 = 30% data untuk testing, 70% untuk training
+# random_state=42 = agar hasil pembagian selalu sama setiap dijalankan
+# Hasil:
+#   X_train = fitur training (70% data)
+#   X_test  = fitur testing (30% data)
+#   y_train = target training
+#   y_test  = target testing
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+# RandomForestClassifier() = membuat objek model
+# n_estimators=100 = jumlah pohon keputusan yang dibuat adalah 100 pohon
+# random_state=42 = agar hasil training selalu sama setiap dijalankan
+
+model.fit(X_train, y_train)
+# .fit() = melatih model dengan data training
+# Model belajar pola hubungan antara X_train (fitur) dan y_train (target)
+# Proses: membuat 100 pohon keputusan dari subset data training
+
+pred = model.predict(X_test)
+# .predict() = melakukan prediksi pada data testing
+# X_test adalah data yang belum pernah dilihat model sebelumnya (30% data)
+# Hasil: pred berisi array nilai 0 atau 1 untuk setiap baris data testing
+# PERHATIAN: Ini sudah BENAR karena memprediksi data testing, bukan training
+
+output = X_test.copy()
+# .copy() = membuat salinan dari X_test agar tidak mengubah data asli
+# output akan berisi 13 kolom fitur dari data testing
+
+output['target'] = y_test
+# Menambahkan kolom 'target' berisi label asli dari data testing
+# Kolom ini akan dibandingkan dengan Prediction di node Scorer
+
+output["Prediction"] = pred
+# Menambahkan kolom 'Prediction' berisi hasil prediksi model (0 atau 1)
+# Scorer akan membandingkan kolom 'target' dengan 'Prediction'
+
+knio.output_tables[0] = knio.Table.from_pandas(output)
+# knio.output_tables[0] = tabel output pertama node Python Script
+# .from_pandas(output) = mengubah DataFrame Pandas menjadi tabel KNIME
+# Tabel ini akan diterima oleh node Scorer untuk dievaluasi
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mModuleNotFoundError[39m                       Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mpandas[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mpd[39;00m
+[32m      2[39m [38;5;66;03m# Fungsi: Untuk memanipulasi data dalam bentuk tabel (DataFrame)[39;00m
+[32m      3[39m [38;5;66;03m# Digunakan untuk: Membaca data, menghapus baris kosong, memilih kolom, membuat output[39;00m
+[32m      5[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01msklearn[39;00m[34;01m.[39;00m[34;01mensemble[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m RandomForestClassifier
+
+[31mModuleNotFoundError[39m: No module named 'pandas'
+
