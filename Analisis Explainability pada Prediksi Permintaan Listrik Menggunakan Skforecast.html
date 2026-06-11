@@ -1,0 +1,2548 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast &#8212; Penambangan Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Prediksi Kadar N02 di Daerah Bali" href="Crawling%20Data%20NO2%20di%20daerah%20Bali.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Penambangan Data - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Penambangan Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    240411100026 Kurnia Maulinda Sari
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Konsep%20Dasar%20Data%20Mining.html">Konsep Dasar Data Mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Busines%20Understanding.html">Business Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data%20Understanding.html">Data Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data%20Preparation.html">Data Preparation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modeling.html">Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Weighted%20K-Nearest%20Neighbor%20%28W-KNN%29.html">Weighted K-Nearest Neighbor (W-KNN)</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="Ujian%20Tangah%20Semester.html">Ujian Tengah Semester Penambangan Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Analisa%20Data%20Menggunakan%20Naive%20Bayes.html">Klasifikasi Naive Bayes pada Obesity Prediction Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Analisa%20Data%20Sleep%20Health%20and%20Lifestyle%20Menggunakan%20Pohon%20Keputusan.html">Analisa Data Menggunakan Pohon Keputusan pada Sleep Health and Lifestyle Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Analisa%20Heart%20Disease%20dataset%20Menggunakan%20Random%20Forest.html">Analisa Heart Disease dataset Menggunakan Random Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Analisa%20Data%20Menggunakan%20Regresi%20Linier.html">Analisa Data Menggunakan Regresi Linier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Crawling%20Data%20NO2%20di%20daerah%20Bali.html">Prediksi Kadar N02 di Daerah Bali</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FAnalisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explainability-pada-forecasting-menggunakan-skforecast">Explainability pada Forecasting Menggunakan Skforecast</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-dataset-vic-electricity">Informasi Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-variabel-dataset-vic-electricity">Deskripsi Variabel Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library">1. Install Library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library">2. Import Library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengambil-dataset">3. Mengambil Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melihat-informasi-dataset">4.Melihat Informasi Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data">5. Visualisasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-data">6. Resampling Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membagi-data-training-dan-testing">7. Membagi Data Training dan Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memisahkan-variabel-target-dan-variabel-eksogen">8. Memisahkan Variabel Target dan Variabel Eksogen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membuat-model-forecasting">9. Membuat Model Forecasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melatih-model">10. Melatih Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melakukan-prediksi">11. Melakukan Prediksi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-hasil-prediksi">12. Visualisasi Hasil Prediksi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membuat-data-training-untuk-explainability">13. Membuat Data Training untuk Explainability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explainability-menggunakan-shap">14. Explainability Menggunakan SHAP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-shap-summary-plot">15. Menampilkan SHAP Summary Plot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-konsep-penting">Kesimpulan Konsep Penting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menjawab-pertanyaan">Menjawab Pertanyaan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-prediksi-tentang-apa">1. Analisa prediksi tentang apa?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-bentuk-data-trainingnya-apa-saja-inputnya-dan-apa-outputnya">2. Bagaimana bentuk data trainingnya (apa saja inputnya dan apa outputnya)?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-lag">3. Apa itu lag?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jelaskan-proses-analisis-yang-dilakukan-dari-kasus-di-atas">4. Jelaskan proses analisis yang dilakukan dari kasus di atas.</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-explainability-pada-prediksi-permintaan-listrik-menggunakan-skforecast">
+<h1>Analisis Explainability pada Prediksi Permintaan Listrik Menggunakan Skforecast<a class="headerlink" href="#analisis-explainability-pada-prediksi-permintaan-listrik-menggunakan-skforecast" title="Link to this heading">#</a></h1>
+<p>Tujuan:</p>
+<ol class="arabic simple">
+<li><p>Mereproduksi implementasi explainability pada model forecasting menggunakan Skforecast.</p></li>
+<li><p>Memahami bentuk data training yang digunakan dalam time series forecasting.</p></li>
+<li><p>Memahami konsep lag dalam forecasting.</p></li>
+<li><p>Menganalisis faktor-faktor yang mempengaruhi hasil prediksi permintaan listrik menggunakan SHAP.</p></li>
+</ol>
+<section id="explainability-pada-forecasting-menggunakan-skforecast">
+<h2>Explainability pada Forecasting Menggunakan Skforecast<a class="headerlink" href="#explainability-pada-forecasting-menggunakan-skforecast" title="Link to this heading">#</a></h2>
+<p>Explainability pada forecasting merupakan pendekatan yang digunakan untuk memahami bagaimana model machine learning menghasilkan prediksi pada data deret waktu (time series). Dalam implementasinya, library Skforecast dapat digunakan untuk membangun model forecasting dengan memanfaatkan algoritma machine learning, seperti LightGBM, sebagai regressor. Model ini memanfaatkan data historis yang diubah ke dalam bentuk supervised learning menggunakan teknik lag, sehingga nilai pada periode sebelumnya dapat digunakan sebagai fitur untuk memprediksi nilai pada periode berikutnya. Selain itu, variabel eksternal seperti temperatur dapat ditambahkan untuk meningkatkan kemampuan prediksi model.</p>
+<p>Salah satu metode yang digunakan untuk meningkatkan interpretabilitas model forecasting adalah SHAP (SHapley Additive exPlanations). SHAP memungkinkan identifikasi kontribusi masing-masing fitur terhadap hasil prediksi yang dihasilkan model. Dengan adanya explainability, pengguna tidak hanya memperoleh informasi mengenai nilai prediksi, tetapi juga dapat memahami faktor-faktor yang memengaruhi keputusan model.</p>
+<p>Penerapan explainability pada forecasting menjadi aspek yang penting karena dapat meningkatkan transparansi, kemudahan interpretasi, serta kepercayaan terhadap model machine learning. Hal ini sangat bermanfaat dalam mendukung pengambilan keputusan yang didasarkan pada hasil prediksi, terutama ketika model yang digunakan memiliki kompleksitas yang tinggi.</p>
+</section>
+<section id="informasi-dataset-vic-electricity">
+<h2>Informasi Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code><a class="headerlink" href="#informasi-dataset-vic-electricity" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspek</p></th>
+<th class="head"><p>Keterangan</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Nama Dataset</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Sumber Dataset</strong></p></td>
+<td><p>Library Skforecast (<code class="docutils literal notranslate"><span class="pre">fetch_dataset</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Dokumentasi Acuan</strong></p></td>
+<td><p>Skforecast Explainability User Guide versi 0.15.1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Jenis Data</strong></p></td>
+<td><p>Time Series (Deret Waktu)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Domain Data</strong></p></td>
+<td><p>Energi / Kelistrikan</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lokasi Pengamatan</strong></p></td>
+<td><p>Victoria, Australia</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Tujuan Analisis</strong></p></td>
+<td><p>Memprediksi permintaan listrik pada periode mendatang</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Variabel Target</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Demand</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Variabel Eksogen</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Temperature</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Frekuensi Data Awal</strong></p></td>
+<td><p>Data interval waktu tertentu (sesuai dataset asli)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Frekuensi Setelah Preprocessing</strong></p></td>
+<td><p>Harian (Daily)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Metode Preprocessing</strong></p></td>
+<td><p>Resampling data menggunakan agregasi harian</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Metode Forecasting</strong></p></td>
+<td><p>Recursive Forecasting menggunakan Skforecast</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Algoritma Regresi</strong></p></td>
+<td><p>LightGBM (<code class="docutils literal notranslate"><span class="pre">LGBMRegressor</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Jumlah Lag yang Digunakan</strong></p></td>
+<td><p>7 lag (7 hari sebelumnya)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Metode Explainability</strong></p></td>
+<td><p>SHAP (SHapley Additive exPlanations)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Tujuan Explainability</strong></p></td>
+<td><p>Mengetahui pengaruh masing-masing fitur terhadap hasil prediksi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Output Model</strong></p></td>
+<td><p>Prediksi permintaan listrik (<code class="docutils literal notranslate"><span class="pre">Demand</span></code>) pada periode berikutnya</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Manfaat Hasil Prediksi</strong></p></td>
+<td><p>Membantu perencanaan kapasitas listrik, distribusi energi, dan pengambilan keputusan operasional</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="deskripsi-variabel-dataset-vic-electricity">
+<h2>Deskripsi Variabel Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code><a class="headerlink" href="#deskripsi-variabel-dataset-vic-electricity" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variabel</p></th>
+<th class="head"><p>Tipe Data</p></th>
+<th class="head"><p>Deskripsi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Demand</span></code></p></td>
+<td><p>Numerik (Float)</p></td>
+<td><p>Menunjukkan jumlah permintaan atau konsumsi listrik pada suatu periode waktu tertentu. Variabel ini menjadi target utama yang akan diprediksi oleh model forecasting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Temperature</span></code></p></td>
+<td><p>Numerik (Float)</p></td>
+<td><p>Menunjukkan temperatur atau suhu udara pada periode waktu tertentu. Digunakan sebagai variabel eksogen karena suhu dapat memengaruhi tingkat konsumsi listrik masyarakat.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Datetime</span> <span class="pre">Index</span></code></p></td>
+<td><p>Datetime</p></td>
+<td><p>Menunjukkan informasi waktu pengamatan data secara kronologis. Digunakan untuk mempertahankan urutan data dalam analisis time series.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="install-library">
+<h3>1. Install Library<a class="headerlink" href="#install-library" title="Link to this heading">#</a></h3>
+<p>Library yang digunakan:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Library</p></th>
+<th class="head"><p>Fungsi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">skforecast</span></code></p></td>
+<td><p>Membuat model forecasting time series</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lightgbm</span></code></p></td>
+<td><p>Algoritma machine learning yang digunakan</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shap</span></code></p></td>
+<td><p>Explainability model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></td>
+<td><p>Pengolahan data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></td>
+<td><p>Visualisasi data</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">skforecast</span><span class="o">==</span><span class="m">0</span>.15.1
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>shap
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>lightgbm
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting skforecast==0.15.1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading skforecast-0.15.1-py3-none-any.whl.metadata (17 kB)
+Requirement already satisfied: numpy&gt;=1.24 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from skforecast==0.15.1) (2.4.6)
+Requirement already satisfied: pandas&gt;=1.5 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from skforecast==0.15.1) (2.3.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tqdm&gt;=4.57 (from skforecast==0.15.1)
+  Downloading tqdm-4.68.2-py3-none-any.whl.metadata (58 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting scikit-learn&gt;=1.2 (from skforecast==0.15.1)
+  Downloading scikit_learn-1.9.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optuna&gt;=2.10 (from skforecast==0.15.1)
+  Downloading optuna-4.9.0-py3-none-any.whl.metadata (15 kB)
+Collecting joblib&gt;=1.1 (from skforecast==0.15.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting numba&gt;=0.59 (from skforecast==0.15.1)
+  Downloading numba-0.65.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.9 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting rich&gt;=13.9 (from skforecast==0.15.1)
+  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting llvmlite&lt;0.48,&gt;=0.47.0dev0 (from numba&gt;=0.59-&gt;skforecast==0.15.1)
+  Downloading llvmlite-0.47.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.0 kB)
+Collecting alembic&gt;=1.5.0 (from optuna&gt;=2.10-&gt;skforecast==0.15.1)
+  Downloading alembic-1.18.4-py3-none-any.whl.metadata (7.2 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting colorlog (from optuna&gt;=2.10-&gt;skforecast==0.15.1)
+  Downloading colorlog-6.10.1-py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: packaging&gt;=20.0 in /home/codespace/.local/lib/python3.12/site-packages (from optuna&gt;=2.10-&gt;skforecast==0.15.1) (25.0)
+Requirement already satisfied: sqlalchemy&gt;=1.4.2 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from optuna&gt;=2.10-&gt;skforecast==0.15.1) (2.0.46)
+Requirement already satisfied: PyYAML in /home/codespace/.local/lib/python3.12/site-packages (from optuna&gt;=2.10-&gt;skforecast==0.15.1) (6.0.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting Mako (from alembic&gt;=1.5.0-&gt;optuna&gt;=2.10-&gt;skforecast==0.15.1)
+  Downloading mako-1.3.12-py3-none-any.whl.metadata (2.9 kB)
+Requirement already satisfied: typing-extensions&gt;=4.12 in /home/codespace/.local/lib/python3.12/site-packages (from alembic&gt;=1.5.0-&gt;optuna&gt;=2.10-&gt;skforecast==0.15.1) (4.15.0)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/codespace/.local/lib/python3.12/site-packages (from pandas&gt;=1.5-&gt;skforecast==0.15.1) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from pandas&gt;=1.5-&gt;skforecast==0.15.1) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/codespace/.local/lib/python3.12/site-packages (from pandas&gt;=1.5-&gt;skforecast==0.15.1) (2025.2)
+Requirement already satisfied: six&gt;=1.5 in /home/codespace/.local/lib/python3.12/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5-&gt;skforecast==0.15.1) (1.17.0)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from rich&gt;=13.9-&gt;skforecast==0.15.1) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/codespace/.local/lib/python3.12/site-packages (from rich&gt;=13.9-&gt;skforecast==0.15.1) (2.19.2)
+Requirement already satisfied: mdurl~=0.1 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=13.9-&gt;skforecast==0.15.1) (0.1.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting scipy&gt;=1.10.0 (from scikit-learn&gt;=1.2-&gt;skforecast==0.15.1)
+  Downloading scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting narwhals&gt;=2.0.1 (from scikit-learn&gt;=1.2-&gt;skforecast==0.15.1)
+  Downloading narwhals-2.22.1-py3-none-any.whl.metadata (15 kB)
+Collecting threadpoolctl&gt;=3.5.0 (from scikit-learn&gt;=1.2-&gt;skforecast==0.15.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+Requirement already satisfied: greenlet&gt;=1 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from sqlalchemy&gt;=1.4.2-&gt;optuna&gt;=2.10-&gt;skforecast==0.15.1) (3.3.1)
+Requirement already satisfied: MarkupSafe&gt;=0.9.2 in /home/codespace/.local/lib/python3.12/site-packages (from Mako-&gt;alembic&gt;=1.5.0-&gt;optuna&gt;=2.10-&gt;skforecast==0.15.1) (3.0.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading skforecast-0.15.1-py3-none-any.whl (812 kB)
+?25l   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/812.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">812.8/812.8 kB</span> <span class=" -Color -Color-Red">23.3 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25hDownloading joblib-1.5.3-py3-none-any.whl (309 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading numba-0.65.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.8 MB)
+?25l   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/3.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">3.8/3.8 MB</span> <span class=" -Color -Color-Red">27.0 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25hDownloading llvmlite-0.47.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (56.3 MB)
+?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/56.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">34.3/56.3 MB</span> <span class=" -Color -Color-Red">171.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">191.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">191.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">191.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">191.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">191.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">56.3/56.3 MB</span> <span class=" -Color -Color-Red">43.4 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:01</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading optuna-4.9.0-py3-none-any.whl (425 kB)
+Downloading alembic-1.18.4-py3-none-any.whl (263 kB)
+Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading scikit_learn-1.9.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.1 MB)
+?25l   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/9.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺</span> <span class=" -Color -Color-Green">8.9/9.1 MB</span> <span class=" -Color -Color-Red">146.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">9.1/9.1 MB</span> <span class=" -Color -Color-Red">41.9 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25hDownloading narwhals-2.22.1-py3-none-any.whl (454 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.2 MB)
+?25l   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/35.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">35.1/35.2 MB</span> <span class=" -Color -Color-Red">176.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">35.1/35.2 MB</span> <span class=" -Color -Color-Red">176.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">35.1/35.2 MB</span> <span class=" -Color -Color-Red">176.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">35.1/35.2 MB</span> <span class=" -Color -Color-Red">176.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">35.2/35.2 MB</span> <span class=" -Color -Color-Red">43.1 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25hDownloading threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Downloading tqdm-4.68.2-py3-none-any.whl (78 kB)
+Downloading colorlog-6.10.1-py3-none-any.whl (11 kB)
+Downloading mako-1.3.12-py3-none-any.whl (78 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tqdm, threadpoolctl, scipy, narwhals, Mako, llvmlite, joblib, colorlog, scikit-learn, rich, numba, alembic, optuna, skforecast
+?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 0/14</span> [tqdm]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 2/14</span> [scipy]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 3/14</span> [narwhals]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 3/14</span> [narwhals]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 4/14</span> [Mako]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 5/14</span> [llvmlite]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 6/14</span> [joblib]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 6/14</span> [joblib]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 8/14</span> [scikit-learn]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 9/14</span> [rich]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green"> 9/14</span> [rich]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━</span> <span class=" -Color -Color-Green">10/14</span> [numba]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━━━━</span> <span class=" -Color -Color-Green">11/14</span> [alembic]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━━━━</span> <span class=" -Color -Color-Green">12/14</span> [optuna]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━</span> <span class=" -Color -Color-Green">13/14</span> [skforecast]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━</span> <span class=" -Color -Color-Green">13/14</span> [skforecast]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━</span> <span class=" -Color -Color-Green">13/14</span> [skforecast]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━</span> <span class=" -Color -Color-Green">13/14</span> [skforecast]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class=" -Color -Color-C237">╺━━</span> <span class=" -Color -Color-Green">13/14</span> [skforecast]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">14/14</span> [skforecast]
+?25h
+Successfully installed Mako-1.3.12 alembic-1.18.4 colorlog-6.10.1 joblib-1.5.3 llvmlite-0.47.0 narwhals-2.22.1 numba-0.65.1 optuna-4.9.0 rich-15.0.0 scikit-learn-1.9.0 scipy-1.17.1 skforecast-0.15.1 threadpoolctl-3.6.0 tqdm-4.68.2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">25.3</span> -&gt; <span class=" -Color -Color-Green">26.1.2</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">python3 -m pip install --upgrade pip</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting shap
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading shap-0.52.0-cp312-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (26 kB)
+Requirement already satisfied: numpy&gt;=2 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (2.4.6)
+Requirement already satisfied: scipy in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (1.17.1)
+Requirement already satisfied: scikit-learn in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (1.9.0)
+Requirement already satisfied: pandas in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (2.3.3)
+Requirement already satisfied: tqdm&gt;=4.27.0 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (4.68.2)
+Requirement already satisfied: packaging&gt;20.9 in /home/codespace/.local/lib/python3.12/site-packages (from shap) (25.0)
+Collecting slicer==0.0.8 (from shap)
+  Downloading slicer-0.0.8-py3-none-any.whl.metadata (4.0 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (0.65.1)
+Requirement already satisfied: llvmlite in /usr/local/python/3.12.1/lib/python3.12/site-packages (from shap) (0.47.0)
+Collecting cloudpickle (from shap)
+  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/codespace/.local/lib/python3.12/site-packages (from pandas-&gt;shap) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from pandas-&gt;shap) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/codespace/.local/lib/python3.12/site-packages (from pandas-&gt;shap) (2025.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /home/codespace/.local/lib/python3.12/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas-&gt;shap) (1.17.0)
+Requirement already satisfied: joblib&gt;=1.4.0 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from scikit-learn-&gt;shap) (1.5.3)
+Requirement already satisfied: narwhals&gt;=2.0.1 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from scikit-learn-&gt;shap) (2.22.1)
+Requirement already satisfied: threadpoolctl&gt;=3.5.0 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from scikit-learn-&gt;shap) (3.6.0)
+Downloading shap-0.52.0-cp312-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (498 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading slicer-0.0.8-py3-none-any.whl (15 kB)
+Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: slicer, cloudpickle, shap
+?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸<span class=" -Color -Color-C237">━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">2/3</span> [shap]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">3/3</span> [shap]
+?25h
+Successfully installed cloudpickle-3.1.2 shap-0.52.0 slicer-0.0.8
+
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">25.3</span> -&gt; <span class=" -Color -Color-Green">26.1.2</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">python3 -m pip install --upgrade pip</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting lightgbm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading lightgbm-4.6.0-py3-none-manylinux_2_28_x86_64.whl.metadata (17 kB)
+Requirement already satisfied: numpy&gt;=1.17.0 in /usr/local/python/3.12.1/lib/python3.12/site-packages (from lightgbm) (2.4.6)
+Requirement already satisfied: scipy in /usr/local/python/3.12.1/lib/python3.12/site-packages (from lightgbm) (1.17.1)
+Downloading lightgbm-4.6.0-py3-none-manylinux_2_28_x86_64.whl (3.6 MB)
+?25l   <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">0.0/3.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">3.6/3.6 MB</span> <span class=" -Color -Color-Red">35.5 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: lightgbm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="import-library">
+<h3>2. Import Library<a class="headerlink" href="#import-library" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LGBMRegressor</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">skforecast.recursive</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForecasterRecursive</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skforecast.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_dataset</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">shap</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mengambil-dataset">
+<h3>3. Mengambil Dataset<a class="headerlink" href="#mengambil-dataset" title="Link to this heading">#</a></h3>
+<p>Dataset vic_electricity merupakan data permintaan listrik di wilayah Victoria, Australia.</p>
+<p>Dataset ini memiliki beberapa variabel seperti:</p>
+<ul class="simple">
+<li><p>Demand → jumlah permintaan listrik.</p></li>
+<li><p>Temperature → temperatur udara.</p></li>
+<li><p>Holiday → indikator hari libur.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">fetch_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;vic_electricity&#39;</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vic_electricity
+---------------
+Half-hourly electricity demand for Victoria, Australia
+O&#39;Hara-Wild M, Hyndman R, Wang E, Godahewa R (2022).tsibbledata: Diverse
+Datasets for &#39;tsibble&#39;. https://tsibbledata.tidyverts.org/,
+https://github.com/tidyverts/tsibbledata/.
+https://tsibbledata.tidyverts.org/reference/vic_elec.html
+Shape of the dataset: (52608, 4)
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-1ab45413-5d26-46fd-97f1-8eb4f65b19e2" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demand</th>
+      <th>Temperature</th>
+      <th>Date</th>
+      <th>Holiday</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-12-31 13:00:00</th>
+      <td>4382.825174</td>
+      <td>21.40</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 13:30:00</th>
+      <td>4263.365526</td>
+      <td>21.05</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 14:00:00</th>
+      <td>4048.966046</td>
+      <td>20.70</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 14:30:00</th>
+      <td>3877.563330</td>
+      <td>20.55</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 15:00:00</th>
+      <td>4036.229746</td>
+      <td>20.40</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-1ab45413-5d26-46fd-97f1-8eb4f65b19e2')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-1ab45413-5d26-46fd-97f1-8eb4f65b19e2 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-1ab45413-5d26-46fd-97f1-8eb4f65b19e2');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<section id="melihat-informasi-dataset">
+<h3>4.Melihat Informasi Dataset<a class="headerlink" href="#melihat-informasi-dataset" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+DatetimeIndex: 52608 entries, 2011-12-31 13:00:00 to 2014-12-31 12:30:00
+Freq: 30min
+Data columns (total 4 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   Demand       52608 non-null  float64
+ 1   Temperature  52608 non-null  float64
+ 2   Date         52608 non-null  object 
+ 3   Holiday      52608 non-null  bool   
+dtypes: bool(1), float64(2), object(1)
+memory usage: 1.7+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-d11e96e9-fbef-437f-b99a-a409f27a15c6" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demand</th>
+      <th>Temperature</th>
+      <th>Date</th>
+      <th>Holiday</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-12-31 13:00:00</th>
+      <td>4382.825174</td>
+      <td>21.40</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 13:30:00</th>
+      <td>4263.365526</td>
+      <td>21.05</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 14:00:00</th>
+      <td>4048.966046</td>
+      <td>20.70</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 14:30:00</th>
+      <td>3877.563330</td>
+      <td>20.55</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2011-12-31 15:00:00</th>
+      <td>4036.229746</td>
+      <td>20.40</td>
+      <td>2012-01-01</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-d11e96e9-fbef-437f-b99a-a409f27a15c6')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-d11e96e9-fbef-437f-b99a-a409f27a15c6 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-d11e96e9-fbef-437f-b99a-a409f27a15c6');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    </div>
+  </div>
+</div></div>
+</div>
+<p>Dataset terdiri atas beberapa variabel yang berkaitan dengan konsumsi listrik di Victoria, Australia.</p>
+<p>Variabel utama yang akan diprediksi adalah:</p>
+<ul class="simple">
+<li><p>Demand : jumlah permintaan listrik.</p></li>
+</ul>
+<p>Sedangkan Temperature digunakan sebagai variabel tambahan (exogenous variable) yang membantu proses prediksi.</p>
+</section>
+<section id="visualisasi-data">
+<h3>5. Visualisasi Data<a class="headerlink" href="#visualisasi-data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;Demand&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Permintaan Listrik&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Demand&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/807949eafcd1d016c34c2681d4e25817acb112351d3687f83e2ed9ecbd43c8d4.png" src="_images/807949eafcd1d016c34c2681d4e25817acb112351d3687f83e2ed9ecbd43c8d4.png" />
+</div>
+</div>
+<p>Visualisasi dilakukan untuk melihat pola permintaan listrik dari waktu ke waktu. Dari grafik dapat diamati adanya fluktuasi serta kemungkinan pola musiman.</p>
+</section>
+<section id="resampling-data">
+<h3>6. Resampling Data<a class="headerlink" href="#resampling-data" title="Link to this heading">#</a></h3>
+<p>Pada dokumentasi, data diubah menjadi frekuensi harian.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Demand&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
+<span class="p">})</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-75d4a61f-0064-42af-bc86-e3c4bb09ae7b" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demand</th>
+      <th>Temperature</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-12-31</th>
+      <td>82531.745918</td>
+      <td>21.047727</td>
+    </tr>
+    <tr>
+      <th>2012-01-01</th>
+      <td>227778.257304</td>
+      <td>26.578125</td>
+    </tr>
+    <tr>
+      <th>2012-01-02</th>
+      <td>275490.988882</td>
+      <td>31.751042</td>
+    </tr>
+    <tr>
+      <th>2012-01-03</th>
+      <td>258955.329422</td>
+      <td>24.567708</td>
+    </tr>
+    <tr>
+      <th>2012-01-04</th>
+      <td>213792.376946</td>
+      <td>18.191667</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-75d4a61f-0064-42af-bc86-e3c4bb09ae7b')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-75d4a61f-0064-42af-bc86-e3c4bb09ae7b button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-75d4a61f-0064-42af-bc86-e3c4bb09ae7b');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    </div>
+  </div>
+</div></div>
+</div>
+<p>Proses resampling dilakukan untuk mengubah data menjadi data harian.</p>
+<ul class="simple">
+<li><p>Demand dijumlahkan setiap hari.</p></li>
+<li><p>Temperature dirata-ratakan setiap hari.</p></li>
+</ul>
+<p>Tujuannya agar model lebih mudah mempelajari pola permintaan listrik harian.</p>
+</section>
+<section id="membagi-data-training-dan-testing">
+<h3>7. Membagi Data Training dan Testing<a class="headerlink" href="#membagi-data-training-dan-testing" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">steps</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="n">data_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="n">steps</span><span class="p">]</span>
+<span class="n">data_test</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="n">steps</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>melihat ukuran:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training:&quot;</span><span class="p">,</span> <span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing :&quot;</span><span class="p">,</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training: (1090, 2)
+Testing : (7, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Data dibagi menjadi dua bagian:</p>
+<ul class="simple">
+<li><p>Data training digunakan untuk melatih model.</p></li>
+<li><p>Data testing digunakan untuk mengevaluasi kemampuan model dalam memprediksi data yang belum pernah dilihat sebelumnya.</p></li>
+</ul>
+</section>
+<section id="memisahkan-variabel-target-dan-variabel-eksogen">
+<h3>8. Memisahkan Variabel Target dan Variabel Eksogen<a class="headerlink" href="#memisahkan-variabel-target-dan-variabel-eksogen" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data_train</span><span class="p">[</span><span class="s1">&#39;Demand&#39;</span><span class="p">]</span>
+<span class="n">exog_train</span> <span class="o">=</span> <span class="n">data_train</span><span class="p">[[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]]</span>
+
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">data_test</span><span class="p">[</span><span class="s1">&#39;Demand&#39;</span><span class="p">]</span>
+<span class="n">exog_test</span> <span class="o">=</span> <span class="n">data_test</span><span class="p">[[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variabel target (y) adalah Demand yang merepresentasikan jumlah permintaan listrik.</p>
+<p>Variabel eksogen (exog) adalah Temperature yang digunakan sebagai informasi tambahan dalam proses forecasting.</p>
+</section>
+<section id="membuat-model-forecasting">
+<h3>9. Membuat Model Forecasting<a class="headerlink" href="#membuat-model-forecasting" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">forecaster</span> <span class="o">=</span> <span class="n">ForecasterRecursive</span><span class="p">(</span>
+    <span class="n">regressor</span><span class="o">=</span><span class="n">LGBMRegressor</span><span class="p">(</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">),</span>
+    <span class="n">lags</span><span class="o">=</span><span class="mi">7</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Model menggunakan algoritma LightGBM.</p>
+<p>Parameter lags=7 menunjukkan bahwa model menggunakan data permintaan listrik 7 hari sebelumnya untuk memprediksi permintaan listrik pada hari berikutnya.</p>
+</section>
+<section id="melatih-model">
+<h3>10. Melatih Model<a class="headerlink" href="#melatih-model" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+    <span class="n">exog</span><span class="o">=</span><span class="n">exog_train</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Tahap fitting bertujuan agar model dapat mempelajari hubungan antara permintaan listrik sebelumnya, temperatur, dan permintaan listrik yang akan datang.</p>
+</section>
+<section id="melakukan-prediksi">
+<h3>11. Melakukan Prediksi<a class="headerlink" href="#melakukan-prediksi" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span>
+    <span class="n">exog</span><span class="o">=</span><span class="n">exog_test</span>
+<span class="p">)</span>
+
+<span class="n">predictions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pred</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2014-12-25</th>
+      <td>196058.886665</td>
+    </tr>
+    <tr>
+      <th>2014-12-26</th>
+      <td>202043.904953</td>
+    </tr>
+    <tr>
+      <th>2014-12-27</th>
+      <td>200527.743695</td>
+    </tr>
+    <tr>
+      <th>2014-12-28</th>
+      <td>226175.933678</td>
+    </tr>
+    <tr>
+      <th>2014-12-29</th>
+      <td>220784.966138</td>
+    </tr>
+    <tr>
+      <th>2014-12-30</th>
+      <td>212101.290487</td>
+    </tr>
+    <tr>
+      <th>2014-12-31</th>
+      <td>192403.998441</td>
+    </tr>
+  </tbody>
+</table>
+</div><br><label><b>dtype:</b> float64</label></div></div>
+</div>
+<p>Model menghasilkan prediksi permintaan listrik untuk periode testing menggunakan informasi historis dan temperatur.</p>
+</section>
+<section id="visualisasi-hasil-prediksi">
+<h3>12. Visualisasi Hasil Prediksi<a class="headerlink" href="#visualisasi-hasil-prediksi" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">y_test</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Actual&#39;</span><span class="p">)</span>
+<span class="n">predictions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prediction&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Perbandingan Aktual dan Prediksi&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/24de24a3043c078fbed67c8d20b42079bc39084f2351305e0700fba9d8d54c80.png" src="_images/24de24a3043c078fbed67c8d20b42079bc39084f2351305e0700fba9d8d54c80.png" />
+</div>
+</div>
+<p>Grafik digunakan untuk membandingkan hasil prediksi model dengan nilai aktual pada data testing.</p>
+</section>
+<section id="membuat-data-training-untuk-explainability">
+<h3>13. Membuat Data Training untuk Explainability<a class="headerlink" href="#membuat-data-training-untuk-explainability" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">create_train_X_y</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+    <span class="n">exog</span><span class="o">=</span><span class="n">exog_train</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-08e016a1-5ff0-4d6a-95b0-b5d43abc66b1" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lag_1</th>
+      <th>lag_2</th>
+      <th>lag_3</th>
+      <th>lag_4</th>
+      <th>lag_5</th>
+      <th>lag_6</th>
+      <th>lag_7</th>
+      <th>Temperature</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2012-01-07</th>
+      <td>205338.714620</td>
+      <td>211066.426550</td>
+      <td>213792.376946</td>
+      <td>258955.329422</td>
+      <td>275490.988882</td>
+      <td>227778.257304</td>
+      <td>82531.745918</td>
+      <td>24.098958</td>
+    </tr>
+    <tr>
+      <th>2012-01-08</th>
+      <td>200693.270298</td>
+      <td>205338.714620</td>
+      <td>211066.426550</td>
+      <td>213792.376946</td>
+      <td>258955.329422</td>
+      <td>275490.988882</td>
+      <td>227778.257304</td>
+      <td>20.223958</td>
+    </tr>
+    <tr>
+      <th>2012-01-09</th>
+      <td>200061.614738</td>
+      <td>200693.270298</td>
+      <td>205338.714620</td>
+      <td>211066.426550</td>
+      <td>213792.376946</td>
+      <td>258955.329422</td>
+      <td>275490.988882</td>
+      <td>19.161458</td>
+    </tr>
+    <tr>
+      <th>2012-01-10</th>
+      <td>216201.836844</td>
+      <td>200061.614738</td>
+      <td>200693.270298</td>
+      <td>205338.714620</td>
+      <td>211066.426550</td>
+      <td>213792.376946</td>
+      <td>258955.329422</td>
+      <td>16.042708</td>
+    </tr>
+    <tr>
+      <th>2012-01-11</th>
+      <td>217176.907910</td>
+      <td>216201.836844</td>
+      <td>200061.614738</td>
+      <td>200693.270298</td>
+      <td>205338.714620</td>
+      <td>211066.426550</td>
+      <td>213792.376946</td>
+      <td>14.815625</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-08e016a1-5ff0-4d6a-95b0-b5d43abc66b1')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-08e016a1-5ff0-4d6a-95b0-b5d43abc66b1 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-08e016a1-5ff0-4d6a-95b0-b5d43abc66b1');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    </div>
+  </div>
+</div></div>
+</div>
+<p>Data training diubah ke dalam bentuk supervised learning sehingga dapat digunakan untuk analisis explainability menggunakan SHAP.</p>
+</section>
+<section id="explainability-menggunakan-shap">
+<h3>14. Explainability Menggunakan SHAP<a class="headerlink" href="#explainability-menggunakan-shap" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">TreeExplainer</span><span class="p">(</span>
+    <span class="n">forecaster</span><span class="o">.</span><span class="n">regressor</span>
+<span class="p">)</span>
+
+<span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">shap_values</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="menampilkan-shap-summary-plot">
+<h3>15. Menampilkan SHAP Summary Plot<a class="headerlink" href="#menampilkan-shap-summary-plot" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">summary_plot</span><span class="p">(</span>
+    <span class="n">shap_values</span><span class="p">,</span>
+    <span class="n">X_train</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4aa531ec8ab17179fd8e001933a3e8fff429f983ca771d6e5473d11a5e711844.png" src="_images/4aa531ec8ab17179fd8e001933a3e8fff429f983ca771d6e5473d11a5e711844.png" />
+</div>
+</div>
+<p>SHAP digunakan untuk mengetahui kontribusi masing-masing fitur terhadap hasil prediksi.</p>
+<p>Semakin besar nilai SHAP suatu fitur, semakin besar pengaruh fitur tersebut terhadap prediksi permintaan listrik.</p>
+</section>
+</section>
+<section id="kesimpulan-konsep-penting">
+<h2>Kesimpulan Konsep Penting<a class="headerlink" href="#kesimpulan-konsep-penting" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Konsep</p></th>
+<th class="head"><p>Penjelasan</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Time Series Forecasting</strong></p></td>
+<td><p>Teknik memprediksi nilai masa depan berdasarkan data historis yang berurutan menurut waktu.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lag</strong></p></td>
+<td><p>Nilai pada periode sebelumnya yang digunakan sebagai fitur prediksi.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Supervised Learning</strong></p></td>
+<td><p>Pendekatan pembelajaran mesin yang menggunakan input (X) dan output (y) untuk melatih model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LightGBM</strong></p></td>
+<td><p>Algoritma machine learning berbasis gradient boosting yang digunakan untuk forecasting.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Exogenous Variable</strong></p></td>
+<td><p>Variabel tambahan dari luar target utama yang dapat mempengaruhi prediksi, seperti temperatur.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SHAP</strong></p></td>
+<td><p>Metode explainability untuk menjelaskan kontribusi masing-masing fitur terhadap hasil prediksi model.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Explainability</strong></p></td>
+<td><p>Kemampuan untuk memahami dan menjelaskan alasan model menghasilkan suatu prediksi tertentu.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="menjawab-pertanyaan">
+<h2>Menjawab Pertanyaan<a class="headerlink" href="#menjawab-pertanyaan" title="Link to this heading">#</a></h2>
+<section id="analisa-prediksi-tentang-apa">
+<h3>1. Analisa prediksi tentang apa?<a class="headerlink" href="#analisa-prediksi-tentang-apa" title="Link to this heading">#</a></h3>
+<p>Analisis prediksi yang dilakukan pada praktikum ini bertujuan untuk memprediksi permintaan listrik (electricity demand) di wilayah Victoria, Australia menggunakan data historis permintaan listrik sebelumnya serta informasi temperatur sebagai variabel tambahan (exogenous variable).</p>
+<p>Variabel yang diprediksi adalah Demand, yaitu jumlah permintaan atau konsumsi listrik pada periode waktu tertentu. Prediksi dilakukan menggunakan model forecasting berbasis machine learning dengan algoritma LightGBM yang diimplementasikan melalui library Skforecast.</p>
+<p>Tujuan dari prediksi ini adalah untuk mengetahui perkiraan kebutuhan listrik pada periode mendatang sehingga dapat membantu penyedia layanan listrik dalam melakukan perencanaan kapasitas pembangkit, pengelolaan distribusi energi, serta pengambilan keputusan operasional secara lebih efektif dan efisien.</p>
+<p>Selain melakukan prediksi, pada praktikum ini juga dilakukan analisis explainability untuk memahami faktor-faktor yang mempengaruhi hasil prediksi model menggunakan metode seperti Feature Importance, Permutation Importance, SHAP Values, dan Partial Dependence Plot (PDP).</p>
+</section>
+<section id="bagaimana-bentuk-data-trainingnya-apa-saja-inputnya-dan-apa-outputnya">
+<h3>2. Bagaimana bentuk data trainingnya (apa saja inputnya dan apa outputnya)?<a class="headerlink" href="#bagaimana-bentuk-data-trainingnya-apa-saja-inputnya-dan-apa-outputnya" title="Link to this heading">#</a></h3>
+<p>Pada kasus forecasting permintaan listrik ini, data training awalnya berbentuk data time series, yaitu data yang tersusun berdasarkan urutan waktu. Namun, agar dapat digunakan oleh algoritma machine learning seperti LightGBM, data tersebut perlu diubah menjadi bentuk supervised learning.</p>
+<p>Bentuk data training yang terbentuk adalah berupa matriks fitur (X) dan target (y). Proses pembentukan data training dilakukan dengan menggunakan metode lag, yaitu mengambil beberapa nilai pada periode sebelumnya sebagai fitur untuk memprediksi nilai pada periode berikutnya.</p>
+<p>Pada ini digunakan 7 lag, sehingga model menggunakan data permintaan listrik selama 7 hari sebelumnya untuk memprediksi permintaan listrik pada hari berikutnya. Selain itu, digunakan juga variabel Temperature sebagai variabel eksogen (variabel tambahan) yang dapat mempengaruhi permintaan listrik.</p>
+<p><strong>Input (<span class="math notranslate nohighlight">\(X\)</span>)</strong></p>
+<p>Input yang digunakan dalam model terdiri dari:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_1</span></code> = Demand pada 1 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_2</span></code> = Demand pada 2 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_3</span></code> = Demand pada 3 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_4</span></code> = Demand pada 4 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_5</span></code> = Demand pada 5 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_6</span></code> = Demand pada 6 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_7</span></code> = Demand pada 7 hari sebelumnya</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Temperature</span></code> = Temperatur pada periode yang diprediksi</p></li>
+</ul>
+<p>Sehingga bentuk input dapat dituliskan sebagai berikut:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>lag_7</p></th>
+<th class="head"><p>lag_6</p></th>
+<th class="head"><p>lag_5</p></th>
+<th class="head"><p>lag_4</p></th>
+<th class="head"><p>lag_3</p></th>
+<th class="head"><p>lag_2</p></th>
+<th class="head"><p>lag_1</p></th>
+<th class="head"><p>Temperature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Demand(t−7)</p></td>
+<td><p>Demand(t−6)</p></td>
+<td><p>Demand(t−5)</p></td>
+<td><p>Demand(t−4)</p></td>
+<td><p>Demand(t−3)</p></td>
+<td><p>Demand(t−2)</p></td>
+<td><p>Demand(t−1)</p></td>
+<td><p>Temperature(t)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Output (<span class="math notranslate nohighlight">\(y\)</span>)</strong></p>
+<p>Output yang diprediksi oleh model adalah:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Demand(t)</span></code> = permintaan listrik pada periode (hari) yang akan diprediksi.</p></li>
+</ul>
+<p>Bentuk output:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Demand(t)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Dengan demikian, model mempelajari hubungan antara permintaan listrik pada 7 hari sebelumnya serta temperatur, untuk memprediksi permintaan listrik pada hari berikutnya.</p>
+<p><strong>Kesimpulan</strong></p>
+<p>Bentuk data training pada kasus ini adalah data supervised learning, di mana input (X) terdiri dari fitur lag (lag_1 hingga lag_7) dan variabel temperatur (Temperature), sedangkan output (y) adalah nilai permintaan listrik (Demand) yang akan diprediksi. Proses ini memungkinkan model machine learning untuk mempelajari pola historis permintaan listrik dan menghasilkan prediksi untuk periode selanjutnya.</p>
+</section>
+<section id="apa-itu-lag">
+<h3>3. Apa itu lag?<a class="headerlink" href="#apa-itu-lag" title="Link to this heading">#</a></h3>
+<p>Lag merupakan nilai observasi pada periode sebelumnya yang digunakan sebagai fitur atau variabel input dalam proses forecasting time series. Lag memungkinkan model untuk memanfaatkan informasi historis dalam memprediksi nilai di masa depan.</p>
+<p>Pada ini digunakan 7 lag, yang berarti model menggunakan data permintaan listrik dari 7 hari sebelumnya untuk memprediksi permintaan listrik pada hari berikutnya.</p>
+<p>Sebagai contoh:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hari</p></th>
+<th class="head"><p>Demand</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Senin</p></td>
+<td><p>1200</p></td>
+</tr>
+<tr class="row-odd"><td><p>Selasa</p></td>
+<td><p>1250</p></td>
+</tr>
+<tr class="row-even"><td><p>Rabu</p></td>
+<td><p>1230</p></td>
+</tr>
+<tr class="row-odd"><td><p>Kamis</p></td>
+<td><p>1300</p></td>
+</tr>
+<tr class="row-even"><td><p>Jumat</p></td>
+<td><p>1280</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sabtu</p></td>
+<td><p>1320</p></td>
+</tr>
+<tr class="row-even"><td><p>Minggu</p></td>
+<td><p>1350</p></td>
+</tr>
+<tr class="row-odd"><td><p>Senin berikutnya</p></td>
+<td><p>?</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Untuk memprediksi permintaan listrik pada Senin berikutnya, model menggunakan:</p>
+<ul class="simple">
+<li><p>Lag 1 = Demand hari Minggu (1350)</p></li>
+<li><p>Lag 2 = Demand hari Sabtu (1320)</p></li>
+<li><p>Lag 3 = Demand hari Jumat (1280)</p></li>
+<li><p>Lag 4 = Demand hari Kamis (1300)</p></li>
+<li><p>Lag 5 = Demand hari Rabu (1230)</p></li>
+<li><p>Lag 6 = Demand hari Selasa (1250)</p></li>
+<li><p>Lag 7 = Demand hari Senin (1200)</p></li>
+</ul>
+<p>Penggunaan lag sangat penting dalam forecasting karena data time series memiliki keterkaitan antar waktu, sehingga pola masa lalu dapat membantu memprediksi nilai di masa depan.</p>
+</section>
+<section id="jelaskan-proses-analisis-yang-dilakukan-dari-kasus-di-atas">
+<h3>4. Jelaskan proses analisis yang dilakukan dari kasus di atas.<a class="headerlink" href="#jelaskan-proses-analisis-yang-dilakukan-dari-kasus-di-atas" title="Link to this heading">#</a></h3>
+<p>Proses analisis yang dilakukan pada praktikum ini terdiri dari beberapa tahapan sebagai berikut:</p>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Menginstal dan Mengimpor Library</p></li>
+</ol>
+</li>
+</ul>
+<p>Tahap pertama adalah menginstal dan mengimpor library yang dibutuhkan, yaitu <strong>Skforecast</strong>, <strong>LightGBM</strong>, <strong>SHAP</strong>, <strong>Pandas</strong>, <strong>NumPy</strong>, dan <strong>Matplotlib</strong>. Library tersebut digunakan untuk membangun model forecasting, melakukan pengolahan data, visualisasi, serta analisis explainability.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="2">
+<li><p>Memuat Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></p></li>
+</ol>
+</li>
+</ul>
+<p>Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code> diambil menggunakan fungsi <code class="docutils literal notranslate"><span class="pre">fetch_dataset()</span></code> dari library Skforecast. Dataset ini berisi data permintaan listrik di Victoria, Australia, serta informasi temperatur yang digunakan sebagai variabel tambahan dalam proses prediksi.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="3">
+<li><p>Eksplorasi dan Visualisasi Data</p></li>
+</ol>
+</li>
+</ul>
+<p>Dilakukan eksplorasi data dengan melihat informasi dataset menggunakan <code class="docutils literal notranslate"><span class="pre">data.info()</span></code> dan <code class="docutils literal notranslate"><span class="pre">data.head()</span></code> untuk mengetahui struktur data, tipe data, dan variabel yang tersedia. Selanjutnya dilakukan visualisasi terhadap variabel <code class="docutils literal notranslate"><span class="pre">Demand</span></code> untuk mengamati pola permintaan listrik dari waktu ke waktu.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="4">
+<li><p>Preprocessing Data</p></li>
+</ol>
+</li>
+</ul>
+<p>Data kemudian diubah menjadi frekuensi harian (daily) melalui proses <strong>resampling</strong>. Pada tahap ini:</p>
+<ul class="simple">
+<li><p>Variabel <code class="docutils literal notranslate"><span class="pre">Demand</span></code> dijumlahkan setiap hari.</p></li>
+<li><p>Variabel <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> dihitung rata-ratanya setiap hari.</p></li>
+</ul>
+<p>Tujuan dari proses ini adalah agar model lebih mudah dalam mempelajari pola permintaan listrik harian.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="5">
+<li><p>Pembagian Data Training dan Testing</p></li>
+</ol>
+</li>
+</ul>
+<p>Dataset dibagi menjadi dua bagian, yaitu:</p>
+<p><strong>Data training</strong>, yang digunakan untuk melatih model forecasting.</p>
+<p><strong>Data testing</strong>, yang digunakan untuk mengevaluasi kemampuan model dalam melakukan prediksi terhadap data yang belum pernah digunakan selama proses pelatihan.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="6">
+<li><p>Menentukan Variabel Target dan Variabel Eksogen</p></li>
+</ol>
+</li>
+</ul>
+<p>Variabel target yang digunakan adalah <strong>Demand</strong>, yaitu permintaan listrik yang akan diprediksi. Sedangkan variabel</p>
+<p><strong>Temperature</strong> digunakan sebagai variabel eksogen (exogenous variable) yang membantu meningkatkan kemampuan prediksi model.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="7">
+<li><p>Pembuatan Model Forecasting</p></li>
+</ol>
+</li>
+</ul>
+<p>Model forecasting dibuat menggunakan <strong>ForecasterRecursive</strong> dengan algoritma <strong>LightGBM Regressor</strong>. Model menggunakan <strong>7 lag</strong>, yang berarti model memanfaatkan data permintaan listrik selama 7 hari sebelumnya untuk memprediksi permintaan listrik pada hari berikutnya.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="8">
+<li><p>Pelatihan Model</p></li>
+</ol>
+</li>
+</ul>
+<p>Model kemudian dilatih menggunakan data training melalui proses <code class="docutils literal notranslate"><span class="pre">fit()</span></code>. Pada tahap ini, model mempelajari hubungan antara permintaan listrik pada periode sebelumnya, temperatur, dan permintaan listrik yang akan datang.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="9">
+<li><p>Melakukan Prediksi</p></li>
+</ol>
+</li>
+</ul>
+<p>Setelah model selesai dilatih, dilakukan proses prediksi terhadap data testing menggunakan fungsi <code class="docutils literal notranslate"><span class="pre">predict()</span></code>. Hasil prediksi kemudian dibandingkan dengan data aktual untuk melihat kemampuan model dalam melakukan forecasting.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="10">
+<li><p>Visualisasi Hasil Prediksi</p></li>
+</ol>
+</li>
+</ul>
+<p>Dilakukan visualisasi antara hasil prediksi dan data aktual untuk mengetahui sejauh mana model mampu mengikuti pola permintaan listrik yang sebenarnya.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="11">
+<li><p>Analisis Explainability Menggunakan SHAP</p></li>
+</ol>
+</li>
+</ul>
+<p>Untuk memahami bagaimana model menghasilkan prediksi, dilakukan analisis explainability menggunakan <strong>SHAP (SHapley Additive exPlanations)</strong>. Proses ini diawali dengan mengubah data training menjadi bentuk supervised learning menggunakan fungsi <code class="docutils literal notranslate"><span class="pre">create_train_X_y()</span></code>, kemudian menghitung nilai SHAP menggunakan <code class="docutils literal notranslate"><span class="pre">TreeExplainer</span></code>.</p>
+<p>Selanjutnya, <strong>SHAP Summary Plot</strong> digunakan untuk menunjukkan kontribusi masing-masing fitur terhadap hasil prediksi. Fitur dengan nilai SHAP yang lebih besar menunjukkan bahwa fitur tersebut memiliki pengaruh yang lebih besar terhadap prediksi permintaan listrik.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="12">
+<li><p>Interpretasi Hasil</p></li>
+</ol>
+</li>
+</ul>
+<p>Berdasarkan hasil SHAP Summary Plot, dapat diketahui fitur-fitur yang paling mempengaruhi prediksi permintaan listrik. Analisis ini membantu meningkatkan transparansi model sehingga hasil prediksi menjadi lebih mudah dipahami dan diinterpretasikan.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Crawling%20Data%20NO2%20di%20daerah%20Bali.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Prediksi Kadar N02 di Daerah Bali</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explainability-pada-forecasting-menggunakan-skforecast">Explainability pada Forecasting Menggunakan Skforecast</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-dataset-vic-electricity">Informasi Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-variabel-dataset-vic-electricity">Deskripsi Variabel Dataset <code class="docutils literal notranslate"><span class="pre">vic_electricity</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library">1. Install Library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library">2. Import Library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengambil-dataset">3. Mengambil Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melihat-informasi-dataset">4.Melihat Informasi Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data">5. Visualisasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-data">6. Resampling Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membagi-data-training-dan-testing">7. Membagi Data Training dan Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memisahkan-variabel-target-dan-variabel-eksogen">8. Memisahkan Variabel Target dan Variabel Eksogen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membuat-model-forecasting">9. Membuat Model Forecasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melatih-model">10. Melatih Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#melakukan-prediksi">11. Melakukan Prediksi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-hasil-prediksi">12. Visualisasi Hasil Prediksi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membuat-data-training-untuk-explainability">13. Membuat Data Training untuk Explainability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explainability-menggunakan-shap">14. Explainability Menggunakan SHAP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-shap-summary-plot">15. Menampilkan SHAP Summary Plot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-konsep-penting">Kesimpulan Konsep Penting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menjawab-pertanyaan">Menjawab Pertanyaan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-prediksi-tentang-apa">1. Analisa prediksi tentang apa?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-bentuk-data-trainingnya-apa-saja-inputnya-dan-apa-outputnya">2. Bagaimana bentuk data trainingnya (apa saja inputnya dan apa outputnya)?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-lag">3. Apa itu lag?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jelaskan-proses-analisis-yang-dilakukan-dari-kasus-di-atas">4. Jelaskan proses analisis yang dilakukan dari kasus di atas.</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kurnia Maulinda Sari
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
