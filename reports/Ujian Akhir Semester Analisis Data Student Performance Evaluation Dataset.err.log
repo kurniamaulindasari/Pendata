@@ -1,0 +1,175 @@
+Traceback (most recent call last):
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/asyncio/base_events.py", line 684, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/codespace/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import pandas as pd
+import knime.scripting.io as knio
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+# 1. BACA DATA DARI KNIME
+df = knio.input_tables[0].to_pandas()
+
+print("="*60)
+print("ANALISIS RANDOM FOREST - DATA GRADE")
+print("="*60)
+print(f"Total data: {len(df)} baris")
+
+# 2. HAPUS DATA KOSONG
+df = df.dropna()
+print(f"Data setelah hapus missing: {len(df)} baris")
+
+# 3. TENTUKAN KOLOM TARGET DAN FITUR
+target_col = 'GRADE'
+
+# Ambil semua fitur kecuali GRADE, COURSE ID, STUDENT ID
+fitur_cols = [col for col in df.columns if col not in [target_col, 'COURSE ID', 'STUDENT ID', 'S1=STUDENT ID', 'RowID']]
+
+print(f"\nTarget: {target_col}")
+print(f"Jumlah fitur: {len(fitur_cols)}")
+
+# 4. PISAHKAN FITUR DAN TARGET
+X = df[fitur_cols]
+y = df[target_col].astype(str)
+
+print(f"Kelas target: {y.unique().tolist()}")
+print("Jumlah data per kelas:")
+print(y.value_counts().sort_index())
+
+# 5. BAGI DATA TANPA STRATIFY
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.3,
+    random_state=42
+)
+
+print(f"\nData Training: {len(X_train)} baris")
+print(f"Data Testing : {len(X_test)} baris")
+
+# 6. LATIH MODEL RANDOM FOREST
+model = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=10,
+    min_samples_split=2,
+    random_state=42
+)
+
+model.fit(X_train, y_train)
+print("\nModel Random Forest berhasil dilatih!")
+
+# 7. PREDIKSI
+pred = model.predict(X_test)
+
+# 8. AKURASI
+accuracy = accuracy_score(y_test, pred)
+print(f"\nAkurasi: {accuracy:.4f} ({accuracy*100:.2f}%)")
+
+# 9. CLASSIFICATION REPORT
+print("\n" + "="*60)
+print("CLASSIFICATION REPORT")
+print("="*60)
+print(classification_report(y_test, pred, zero_division=0))
+
+# 10. CONFUSION MATRIX
+print("\n" + "="*60)
+print("CONFUSION MATRIX")
+print("="*60)
+cm = confusion_matrix(y_test, pred)
+labels = sorted(set(y.unique()) | set(pred))
+cm_df = pd.DataFrame(cm, index=labels, columns=labels)
+print(cm_df)
+
+# 11. PER HITUNGAN PER KELAS
+print("\n" + "="*60)
+print("STATISTIK PER KELAS")
+print("="*60)
+
+for kelas in sorted(set(y.unique()) | set(pred)):
+    total_aktual = (y_test == kelas).sum()
+    total_prediksi = (pred == kelas).sum()
+    benar_kelas = ((y_test == kelas) & (pred == kelas)).sum()
+
+    if total_aktual > 0:
+        recall = benar_kelas / total_aktual
+    else:
+        recall = 0
+
+    if total_prediksi > 0:
+        precision = benar_kelas / total_prediksi
+    else:
+        precision = 0
+
+    if (precision + recall) > 0:
+        f1 = 2 * (precision * recall) / (precision + recall)
+    else:
+        f1 = 0
+
+    print(f"\nKelas {kelas}:")
+    print(f"  Aktual  : {total_aktual} data")
+    print(f"  Prediksi: {total_prediksi} data")
+    print(f"  Benar   : {benar_kelas} data")
+    print(f"  Precision: {precision:.2%}")
+    print(f"  Recall   : {recall:.2%}")
+    print(f"  F1-Score : {f1:.2%}")
+
+# 12. FEATURE IMPORTANCE
+print("\n" + "="*60)
+print("FEATURE IMPORTANCE (Top 10)")
+print("="*60)
+
+feature_importance = pd.DataFrame({
+    'Fitur': fitur_cols,
+    'Importance': model.feature_importances_
+}).sort_values('Importance', ascending=False)
+
+print(feature_importance.head(10))
+
+# 13. OUTPUT KE KNIME
+output = X_test.copy()
+output[target_col] = y_test
+output["Prediction"] = pred
+
+knio.output_tables[0] = knio.Table.from_pandas(output)
+
+# 14. RINGKASAN
+print("\n" + "="*60)
+print("RINGKASAN")
+print("="*60)
+benar = (y_test == pred).sum()
+salah = (y_test != pred).sum()
+print(f"Total data testing: {len(y_test)}")
+print(f"Prediksi benar    : {benar} ({benar/len(y_test)*100:.2f}%)")
+print(f"Prediksi salah    : {salah} ({salah/len(y_test)*100:.2f}%)")
+print(f"Akurasi           : {accuracy*100:.2f}%")
+print("")
+print("Selesai!")
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mModuleNotFoundError[39m                       Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 2[39m
+[32m      1[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mpandas[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mpd[39;00m
+[32m----> [39m[32m2[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mknime[39;00m[34;01m.[39;00m[34;01mscripting[39;00m[34;01m.[39;00m[34;01mio[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mknio[39;00m
+[32m      3[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01msklearn[39;00m[34;01m.[39;00m[34;01mensemble[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m RandomForestClassifier
+[32m      4[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01msklearn[39;00m[34;01m.[39;00m[34;01mmodel_selection[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m train_test_split
+
+[31mModuleNotFoundError[39m: No module named 'knime'
+
